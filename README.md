@@ -16,7 +16,7 @@ After CF_CallContainment.yaml is executed
 
 The rest application loops through a simple menu.  Options 1,2,3 are for various departments. Option 4 is to exit.  Option 0 will exit to agent and therefore me considered a call that was not contained.
 
-A DynamopDB table will be created CallAuditTable.
+A DynamoDB table will be created CallAuditTable.
 
 Each call will generate and entry that can be used for reporting. Example Below.
 
