@@ -15,7 +15,7 @@ After CF_CallContainment.yaml is executed
 3. Update the Lambda blocks in the contact flow and publish.
 4. Assign DID to the ContainmentTestFlow
 
-The rest application loops through a simple menu.  Options 1,2,3 are for various departments. Option 4 is to exit.  Option 0 will exit to agent and therefore me considered a call that was not contained.
+The rest application loops through a simple menu.  Options 1,2,3 are for various departments. Option 4 is to exit.  Option 0 will exit to agent and therefore not be considered contained.
 
 A DynamoDB table will be created CallAuditTable.
 
