@@ -5,7 +5,8 @@ Directions:
 
 Before creating the stack with the cloudformation template, CF_CallContainment.yaml, perform the following steps:
 1. Update line 25 of CF_CallContainment.yaml to reflect your bucket name
-2. Upload CallContainmentCode.zip into newly created bucket
+2. Zip lambda_function.py and name it CallContainmentCode.zip 
+3. Upload CallContainmentCode.zip into newly created bucket
 
 
 After CF_CallContainment.yaml is executed
