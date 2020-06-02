@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:
+  This template provisions the Lambda function, IAM role, and DynamoDB table
+  to record customer containment in contact flows.
+Parameters:
+  DynamoDBTableName:
+    Type: String
+    Default: "CallAuditTable"
+  LambdaName:
+    Type: String
+    Default: "AmazonConnectCallContainment"
+  IAMRoleName:
+    Type: String
+    Default: "AmazonConnectCallContainment_Lambda_Role"
+Resources:
+  CustomerJourneyLambda:
+    Type: AWS::Lambda::Function
+    DeletionPolicy: Delete
+    Properties:
+      FunctionName:
+        Ref: LambdaName
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Code:
+        S3Bucket: 'connect-071e88eae833'
+        S3Key: CallContainmentCode.zip
+      Environment:
+        Variables:
+          table_name : 
+            Ref: DynamoDBTableName
+      Runtime: python3.8
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    DeletionPolicy: Delete
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: AWSLambdaDynamoDBAccess
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - dynamodb:*
+            Resource: arn:aws:dynamodb:*:*:*
+      RoleName:
+        Ref: IAMRoleName
+  CustomerJourneyDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "ContactID"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "ContactID"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName:
+        Ref: DynamoDBTableName
